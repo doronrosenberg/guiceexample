@@ -3,7 +3,6 @@ package com.guicesample.rest;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.SecurityContext;
 
 import com.guicesample.Context;
 import com.guicesample.service.Foo;
@@ -23,9 +22,8 @@ public class APIResource {
   }
 
   @GET
-  public String test(@javax.ws.rs.core.Context SecurityContext securityContext) {
+  public String test() {
     System.out.println("Context principal: " + context.getValue());
-    System.out.println("Security context principal: " + securityContext.getUserPrincipal().getName());
     return foo.get();
   }
 }

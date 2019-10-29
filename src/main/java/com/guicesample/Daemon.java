@@ -104,7 +104,7 @@ public class Daemon {
   public static class APIServer extends ResourceConfig {
     @Inject
     public APIServer() {
-      packages("com.dremio.guicesample.rest");
+      packages("com.guicesample.rest");
       injector = Guice.createInjector(new TestModule(), new ServletModule());
 
       // Hooks up The HK2/Guice bridge.  This allows Jersey injection (which uses HK2 by default) to inject Guice bound
