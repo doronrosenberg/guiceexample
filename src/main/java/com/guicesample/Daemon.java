@@ -20,6 +20,7 @@ import org.jvnet.hk2.guice.bridge.api.GuiceIntoHK2Bridge;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.inject.util.Modules;
 import com.guicesample.service.Foo;
 import com.guicesample.service.FooService;
 import com.google.inject.AbstractModule;
@@ -33,6 +34,7 @@ import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.RequestScoper;
 import com.google.inject.servlet.ServletModule;
 import com.google.inject.servlet.ServletScopes;
+import com.guicesample.service.OtherFooService;
 
 /**
  * Daemon - starts the jetty server and inits Guice.
@@ -105,7 +107,7 @@ public class Daemon {
     @Inject
     public APIServer() {
       packages("com.guicesample.rest");
-      injector = Guice.createInjector(new TestModule(), new ServletModule());
+      injector = Guice.createInjector(Modules.override(new TestModule()).with(new TestOverrideModule()), new ServletModule());
 
       // Hooks up The HK2/Guice bridge.  This allows Jersey injection (which uses HK2 by default) to inject Guice bound
       // classes.
@@ -151,6 +153,24 @@ public class Daemon {
       context.init(request.getParameter("name"));
 
       return context;
+    }
+  }
+
+  /**
+   * Guice module that overrides TestModule.
+   */
+  public static class TestOverrideModule extends AbstractModule {
+    @Override
+    protected void configure() {
+      bind(Bar.class).to(OtherBar.class);
+    }
+
+    @Provides
+    @RequestScoped
+    Foo getFoo(Context context, Bar bar) {
+      System.out.println("getFoo context: " + context.getValue());
+      System.out.println("Bar context: " + bar.getContext().getValue());
+      return new OtherFooService(context);
     }
   }
 }
