@@ -23,7 +23,7 @@ public class APIResource {
 
   @GET
   public String test() {
-    System.out.println("Context principal: " + context.getValue());
+    System.out.println("Rest endpoint context: " + context.getValue());
     return foo.get();
   }
 }

@@ -98,7 +98,7 @@ public class Daemon {
   }
 
   /**
-   * Config
+   * Config for REST API endpoint
    */
   @ApplicationPath("/")
   public static class APIServer extends ResourceConfig {

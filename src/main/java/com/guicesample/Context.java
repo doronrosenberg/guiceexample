@@ -1,9 +1,5 @@
 package com.guicesample;
 
-import java.security.Principal;
-
-import javax.ws.rs.core.SecurityContext;
-
 /**
  * Generic context object that is used in the rest and service code.  Due to how weld works, we inject it and then
  * init the value.
@@ -23,7 +19,6 @@ public class Context{
     this.value = value;
     this.inited = true;
   }
-
 
   public String getValue() {
     return value;
